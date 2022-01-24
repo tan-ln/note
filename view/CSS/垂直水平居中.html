@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>垂直水平居中</title>
+    <style>
+        #root {
+            width: 500px;
+            height: 300px;
+            border: 1px solid #ff5330;
+        }
+        .main {
+            width: 100px;
+            height: 180px;
+            background-color: chartreuse;
+        }
+        .root {
+            /* line-height: 300px; */
+            /* text-align: center; */
+            position: relative;
+        }
+        .main {
+            position: relative;
+            left: 0;
+            top: 0;
+            /* transform: translate(-50%, -50%); */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="root" class="root">
+        <div class="main">13561</div>
+        <!-- <div class="main vertical">13561</div> -->
+    </div>
+</body>
+
+</html>

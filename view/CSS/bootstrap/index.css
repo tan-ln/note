@@ -1,0 +1,18 @@
+.wrapper {
+    padding-top: 68px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+nav.navbar {
+    margin-bottom: 0;
+}
+
+.navbar.navbar-has-shadow {
+    box-shadow: 0 0 14px -6px rgba(0,0,0,.2)!important;
+}
+
+.navbar-toggle .icon-bar {
+    background: #2196f3;
+}
