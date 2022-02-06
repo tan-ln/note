@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div p:first-child {
+      background-color: rgb(74, 240, 110);
+    }
+    p:nth-child(3) {
+      font-size: 30px;
+      background-color: hsl(120, 100%, 30%);
+    }
+    div span:nth-of-type(2) {
+      background-color: rgb(206, 94, 94);
+    }
+    div span:first-of-type {
+      color: aqua;
+    }
+    div span:last-of-type {
+      color: blueviolet;
+    }
+    ul li:nth-child(odd) {
+      color: coral;
+    }
+    ul li:nth-child(2n):not(:last-child) {
+      background-color: rgb(102, 156, 236);
+    }
+
+    div strong {
+      color: cadetblue;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p>ppppppppppp</p>
+    <p>ppppppppppp</p>
+    <p>ppppppppppp</p>
+    <p>ppppppppppp</p>
+    <a href="#">linklinlininininin</a>
+    <span>11111111111111111111111</span>
+    <span>11111111111111111111111</span>
+    <span>11111111111111111111111</span>
+
+    <ul>
+      <li>222222222222</li>
+      <li>222222222222</li>
+      <li>222222222222</li>
+      <li class="li">222222222222</li>
+      <li>222222222222</li>
+      <li>222222222222</li>
+    </ul>
+
+    <section>section</section>
+    <section>
+      <strong>strong</strong>
+    </section>
+    <section>section</section>
+  </div>
+</body>
+</html>

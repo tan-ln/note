@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>setup</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="root">
+    <h1>{{ test() }}</h1>
+    <h1>{{ test() }}</h1>
+    <h3>{{ show }}</h3>
+    <h3>{{ show }}</h3>
+  </div>
+</body>
+<script>
+
+  /*
+    打印结果：
+      ****methods******
+      ****methods******
+      ----computed------
+  */
+
+
+  const app = new Vue({
+    data() {
+      return {
+        msg: 'vue'
+      }
+    },
+    computed: {
+      show() {
+        console.log('----computed------')
+        return this.msg
+      }
+    },
+    methods: {
+      test() {
+        console.log('****methods******')
+        return this.msg
+      }
+    }
+  })
+
+  const vm = app.$mount('#root')
+</script>
+
+</html>
