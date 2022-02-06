@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+     <!-- 原型链继承  -->
+     <!-- 子类的原型作为父类的实例  -->
+     <!-- 当父类属性是 引用类型，会共享引用类型，子类对其操作也会影响其他子类 -->
+        
+    <script>
+        function Person() {
+            this.kind = 'someone'
+            this.like = function(food) {
+                console.log(this.name + ' likes ' + food)
+            }
+        }
+        Person.prototype.eat = function(food) {
+            console.log(this.name + ' is eating ' + food)
+        }
+        
+        function Kid(name) {
+            this.name = name
+        }
+        // 对 prototype 重新赋值后，constructor 的指向也发生了改变（指向 父类）
+        Kid.prototype = new Person()       
+        // 任何一个构造函数都有一个prototype对象，
+        // 这个prototype对象都有一个constructor属性指向自身的构造函数
+        Kid.prototype.constructor = Kid     // 手动将 constructor 指回子类
+        const k1 = new Kid('bob')
+        k1.like('nothing')  // bob likes nothing
+        k1.eat('banana')    // bob is eating banana
+
+    </script>
+
+
+</body>
+
+</html>
+
+</Datag>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

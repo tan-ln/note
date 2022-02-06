@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+     <!-- 原型式继承  -->
+     <!-- Object.create() 的原理，传入一个 原型对象A，返回一个新对象B，并且 b.__proto__ -> A -->
+     <!-- 用一个函数包装一个对象，然后返回这个函数的调用，这个函数就变成了一个
+        可以随意增添属性的实例或对象 -->
+
+    <script>
+        function content(obj) {
+            function F() {}
+            F.prototype = obj
+            return new F()
+        }
+
+        function Person(one) {
+            this.kind = one || 'someone'
+        }
+
+        Person.prototype.show = function() {
+            console.log(this.kind)
+        }
+
+        const p1 = new Person('Trump')
+        console.log(content(p1).kind)   // Trump
+
+    </script>
+
+
+</body>
+
+</html>
+
+</Datag>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

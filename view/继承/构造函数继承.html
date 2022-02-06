@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+     <!-- 构造函数继承  -->
+     <!-- 使用 call / apply 将子类构造函数的 this 指向父类的构造函数的 this  -->
+     <!-- 只能继承父类构造函数中的属性和方法，对于 原型对象 无法继承 -->
+    <script>
+        function Person() {
+            this.kind = 'someone'
+            this.like = function(food) {
+                console.log(this.name + ' likes ' + food)
+            }
+        }
+        Person.prototype.eat = function(food) {
+            console.log(this.name + ' is eating ' + food)
+        }
+
+        function Student(name) {
+            Person.apply(this, arguments)
+            this.name = name
+        }
+        const s1 = new Student('trump')
+        s1.like('apple')    // trump likes apple
+        s1.eat('apple') //error
+
+    </script>
+
+
+</body>
+
+</html>
+
+</Datag>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

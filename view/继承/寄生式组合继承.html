@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- 寄生组合式继承 -->
+    <!-- 寄生 + 组合 -->
+    <script>
+        function inheritPrototype(child, parent) {
+            function F() {}
+            F.prototype = parent.prototype
+            child.prototype = new F()
+            child.prototype.constructor = child
+        }
+
+        // 父类
+        function Parent(name) {
+            this.name = name
+            this.friends = ['Obama', 'Biden', 'Bush']
+        }
+        Parent.prototype.showName = function() {
+            console.log('parent show name: ' + this.name)
+        }
+
+        // 子类
+        function Child(name, age) {
+            Parent.apply(this, arguments)
+            this.age = age
+        }
+
+        inheritPrototype(Child, Parent)
+
+        Child.prototype.showAge = function() {
+            console.log('chlid show age: ' + this.age)
+        }
+
+        const p1 = new Child('Trump', 60)
+        // console.log(p1)
+        // p1.showAge()
+        // p1.showName()
+    </script>
+
+
+</body>
+
+</html>
+
+</Datag>

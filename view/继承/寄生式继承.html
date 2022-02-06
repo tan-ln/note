@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- 寄生式继承 -->
+    <!-- 在原型式继承的基础上，创建一个 封装基础过程的函数 -->
+    <!-- 这个函数内部可以添加新的属性和方法，增强对象 -->
+    <!-- 类似于工厂模式 -->
+
+    <script>
+        // function content(obj) {
+        //     function F() {}
+        //     F.prototype = obj
+        //     return new F()
+        // }
+
+        function createAnother(obj, sex) {
+            // 创建一个新对象，并链接原型
+            const clone = Object.create(obj)
+            // 增强对象，添加属性和方法
+            clone.sex = sex
+            clone.showSex = function () {
+                console.log(this.sex)
+            }
+            return clone
+        }
+
+        // 父类
+        const person = {
+            name: 'Trump',
+            frients: ['Obama', 'Biden', 'Bush'],
+            getName: function () {
+                console.log(this.name)
+            }
+        }
+
+        const person2 = createAnother(person, 'male')
+        person2.showSex() // male
+        person2.getName() // Trump
+    </script>
+
+
+</body>
+
+</html>
+
+</Datag>

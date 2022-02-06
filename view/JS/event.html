@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js 事件机制</title>
+</head>
+<body>
+    <div id="div">
+        文本节点
+        <h4 id="h4_1">第一个 h4</h4>
+        <h4 id="h4_2">第二个 h4</h4>
+    </div>
+    <script>
+        let oDiv = document.getElementById('div')
+        let oH4_1 = document.getElementById('h4_1')
+
+        oDiv.addEventListener('click', () => {
+            alert('div 冒泡')
+        }, true)
+
+        oDiv.addEventListener('click', () => {
+            alert('div 不冒泡')
+        }, false)
+
+        
+        oH4_1.addEventListener('click', () => {
+            alert(oH4_1.innerText)
+        }, false)
+
+
+    </script>
+</body>
+</html>
