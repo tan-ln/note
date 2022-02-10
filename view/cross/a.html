@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <input type="button" value="b.html send message" id="btn" /> -->
+    <h1>a.html</h1>
+    <script>
+
+    window.addEventListener('message', e => {
+        console.log(e)
+        if (e.origin !== 'http://127.0.0.1:8080/') return
+        e.source.postMessage('message from a.html', e.origin)
+    })
+    </script>
+</body>
+
+</html>
+

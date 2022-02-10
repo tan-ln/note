@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      MaRGin: 10px
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script>
+    var menu = [
+      {
+        "type_id": 1,
+        "name": "大菜",
+        "food": [
+          {
+            "food_id": 1,
+            "name": "鱼香肉丝",
+            "price": "10"
+          },
+          {
+            "food_id": 2,
+            "name": "红烧肉",
+            "price": "11"
+          },
+          {
+            "food_id": 3,
+            "name": "香辣粉",
+            "price": "12"
+          }
+        ]
+      },
+      {
+        "type_id": 2,
+        "name": "中菜",
+        "food": [{
+          "food_id": 4,
+          "name": "小炒肉",
+          "price": "13"
+        },
+        {
+          "food_id": 5,
+          "name": "云吞",
+          "price": "14"
+        }
+        ]
+      },
+      {
+        "type_id": 3,
+        "name": "小菜",
+        "food": [
+          {
+            "food_id": 6,
+            "name": "雪糕",
+            "price": "15"
+          },
+          {
+            "food_id": 7,
+            "name": "黄瓜",
+            "price": "16"
+          }
+        ]
+      }
+    ];
+
+    const rootDom = document.getElementById('root')
+
+    const addLiFunc = function (data) {
+      let oUl = '<ul>'
+      for (const item of data) {
+        oUl += `<li>${item.name}<ul>`
+        for (const key in item.food) {
+          oUl += `<li>${item.food[key].name}</li>`
+        }
+        oUl += '</ul></li>'
+      }
+      return oUl += '</ul>'
+    }
+
+    let ulDom = addLiFunc(menu)
+    rootDom.innerHTML = ulDom
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const arr = [1, 2, 3, 4, 5]
+        // a: 累加器 ， b: 当前值
+        const total = arr.reduce((a, b) => {
+            // console.log('a: ' + a + 'b: ' + b)
+            return a + b
+        }, 0)
+        // console.log("total : "+ total)
+
+        // 展平数组（多维转一维）
+        const twoDArr = [ [1,2], [3,4], [5,6], [7,8] , [9,10] ]
+        const onwDArr = twoDArr.reduce((add, cur) => add.concat(cur), [])
+        // console.log(onwDArr) // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        // 去重
+        const duplicatedsArr = [1, 5, 6, 5, 7, 1, 6, 8, 9, 7]
+        const removeSame = duplicatedsArr.reduce((accumulator, currentValue) => {
+            if (!accumulator.includes(currentValue) ) {
+                accumulator.push(currentValue)
+            }
+            return accumulator
+        }, [])
+        console.log(removeSame) // [1, 5, 6, 7, 8, 9]
+    </script>
+</body>
+
+</html>
+
+</Datag>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

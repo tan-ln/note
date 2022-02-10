@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .container {
+            padding: 0 200px;
+        }
+        .middle, .left, .right {
+            height: 200px;
+            float: left;
+            position: relative;
+        }
+        .middle {
+            width: 100%;
+            background-color: rgb(238, 54, 54);
+        }
+        .left {
+            width: 200px;
+            margin-left: -100%;
+            left: -200px;
+            background-color: rgb(95, 219, 64);
+        }
+        .right {
+            width: 200px;
+            margin-right: -200px;
+            background-color: rgb(64, 143, 247);
+        }
+    </style>
+    <!-- 双飞翼 -->
+    <!-- <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .middle, .left, .right {
+            height: 200px;
+            float: left;
+        }
+        .inner {
+            padding: 0 200px;
+            width: 100%;
+        }
+        .middle {
+            width: 100%;
+            background-color: rgb(238, 54, 54);
+        }
+        .left {
+            width: 200px;
+            margin-left: -100%;
+            left: -200px;
+            background-color: rgb(95, 219, 64);
+        }
+        .right {
+            width: 200px;
+            margin-left: -200px;
+            background-color: rgb(64, 143, 247);
+        }
+    </style> -->
+
+</head>
+<body>
+    <div class="container">
+            <div class="middle">
+                    <!-- <div class="inner"> -->
+                        中间弹性区
+                    <!-- </div> -->
+            </div>
+
+            <div class="left">
+                    左边栏
+            </div>
+
+        <div class="right">
+            右边栏
+        </div>
+    </div>
+</body>
+</html>

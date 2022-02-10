@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+        .container div {
+            height: 200px;
+        }
+        .middle {
+            flex: 1;
+            background-color: rgb(238, 54, 54);
+        }
+        .left {
+            width: 200px;
+            background-color: rgb(95, 219, 64);
+            min-width: 200px;
+        }
+        .right {
+            width: 200px;
+            background-color: rgb(64, 143, 247);
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <div class="left">
+                    左边栏
+                </div>
+        <div class="middle">
+            <!-- <div class="inner"> -->
+                中间弹性区
+            <!-- </div> -->
+        </div>
+
+        <div class="right">
+            右边栏
+        </div>
+    </div>
+    <!-- <script>
+        var name = 'global';
+
+        var obj = {
+            name : 'obj',
+            dose : function(){
+                this.name = 'dose';
+                return function(){
+                    return this.name;
+                }
+            }
+        }
+        console.log(obj.dose().call(this))
+    </script> -->
+    <script>
+        // document.write(typeof function() {})
+        // document.write(Object.is(+0, -0))
+        // document.write(Object.is(NaN, NaN))
+        document.write(undefined == null)
+        // document.write(Object.is('string' - 1, parseInt('a')))
+        // document.write([] * 20)
+    </script>
+</body>
+</html>
