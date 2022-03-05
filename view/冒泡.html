@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #div {
+      width: 100px;
+      height: 100px;
+      background-color: rgb(175, 221, 137);
+    }
+    #inner {
+      width: 60px;
+      height: 60px;
+      background-color: rgb(62, 143, 168);
+    }
+    h2 {
+      background-color: rgb(255, 118, 118);
+    }
+  </style>
+</head>
+<body>
+  <div id="div">
+    111
+    <div id="inner">
+      <h2 id="h2">789</h2>
+    </div>
+  </div>
+  <script>
+    const oDiv = document.getElementById('div')
+    const oInner = document.getElementById('inner')
+    const oH2 = document.getElementById('h2')
+    oInner.addEventListener('click', () => console.log('oInner 冒泡'), false)
+    oH2.addEventListener('click', () => console.log('oH2 冒泡'), false)
+    oH2.addEventListener('click', () => console.log('oH2 捕获'), true)
+    oInner.addEventListener('click', () => console.log('oInner 捕获'), true)
+    oDiv.addEventListener('click', () => console.log('oDiv 冒泡'), false)
+    oDiv.addEventListener('click', () => console.log('oDiv 捕获'), true)
+  </script>
+</body>
+</html>
