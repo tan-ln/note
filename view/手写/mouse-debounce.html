@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  const debounce = function (fun, delay) {
+    let timer = null
+    return function (...args) {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        fun.apply(this, args)
+      }, delay);
+    }
+  }
+  const handle = debounce(e => 
+    console.log('x: ' + e.pageX, ' , y: ' + e.pageY)
+  , 500)
+
+  // window.addEventListener('mousemove', handle)
+  window.addEventListener('mousemove', debounce(e => console.log(e.pageX), 500))
+
+</script>
+</html>
