@@ -2,18 +2,19 @@
 
 // 1. 传 首尾 两个参数 （1， 100）
 //    递归 100 / 2 - 1 次
-const add = function (a, b, total = 0) {
-  total += (a + b)
-  a++; b--
-  if (a > b) {
-    return total
-  } else {
-    return add(a, b, total)
-  }
+const add = function (a, b) {
+	let total = 0
+	total += (a + b)
+	a++; b--
+	if (a > b) {
+		return total
+	} else {
+		return total + add(a, b)
+	}
 }
 
-// const res = add(1, 100)
-// console.log(res)              // 5050
+const res = add(1, 100)
+console.log(res)              // 5050
 
 // 2. 传 第一 二 个参数 （1， 2） 默认结束值 100
 //    递归 100 - 1 次

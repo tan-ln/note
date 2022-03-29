@@ -107,23 +107,21 @@
 // console.log(...myMap)
 
 
-for (var i = 0; i < 3; i++) {
-    setTimeout(function () {
-        console.log(i)     //  3 3 3
-    }, 0);
-}
+// for (var i = 0; i < 3; i++) {
+//     setTimeout(function () {
+//         console.log(i)     //  3 3 3
+//     }, 0);
+// }
 
 
 
-var a = 10
-var a = 20
-let b = 5
+// var a = 10
+// var a = 20
+// let b = 5
 // let b = 50
-const c = 0.5
-c = 1
-console.log(a)
-console.log(b)
-console.log(c)
-
-
+// const c = 0.5
+// c = 1
+// console.log(a)
+// console.log(b)
+// console.log(c)
 

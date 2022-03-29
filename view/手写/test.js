@@ -1,23 +1,37 @@
-// 斐波那契 1 2 3 5 8 。。。
-// 输出相同
+const _Promise = function (fn) {
+  this.state = 'PENDDING'
+  this.value = ''
 
-// 1. 
-// let a = 1, b = 1
-
-// for (let i = 0; b < 1000; i++) {
-//   console.log(b)
-
-//   b += a
-//   a = b - a
-// }
-
-
-// 2. 
-(function a (arr = [1, 0]) {
-  const [x, y] = arr
-  if (x < 1000) {
-    y && console.log(x)
-    const t = (x * 10 + y * 10) / 10
-    a([t, x])
+  const resolve =  (value) => {
+    this.state = 'RESOLVE'
+    this.value = value
   }
-})()
+  const reject = (value) => {
+    this.state = 'REJECT'
+    this.value = value
+  }
+  this.then = (onResovle, onReject) => {
+    if (this.state === 'RESOLVE') {
+      onResovle(this.value)
+    } else {
+      onReject(this.value)
+    }
+  }
+
+  try {
+    fn(resolve, reject)
+  } catch(err) {
+    reject(err)
+  }
+}
+
+let p = new _Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('hello')
+  }, 1000);
+})
+
+p.then(res => {
+  console.log(res)
+})
+
