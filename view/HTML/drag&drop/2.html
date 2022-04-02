@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>小喵咪喂给大黄鱼</title>
-    <style>
-        body{
-            text-align: center;
-        }
 
-        img{
-            width: 80px;
-            height: 80px;
-            border-radius:100%;
-        }
-        #fish{
-            margin-top: 200px;
-            opacity: .2;
-        }
-    </style>
+<head>
+	<meta charset="UTF-8">
+	<title>投币</title>
+	<style>
+		body {
+			text-align: center;
+		}
+		img {
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			margin: 20px;
+		}
+		#bag {
+			width: 200px;
+			height: 200px;
+			margin-top: 200px;
+			opacity: .2;
+		}
+	</style>
 </head>
+
 <body>
- <h3>小喵咪拖到大黄鱼上面的时候消失（删除小喵咪）</h3>
- <img   class="cat"   id="cat1" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537439299088&di=4abcae9fe10a919fd23695be63506d91&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01c2e05777054e0000012e7eceda20.jpg%401280w_1l_2o_100sh.jpg" alt="">
- <img   class="cat"   id="cat2" src="http://img4.imgtn.bdimg.com/it/u=2404190189,262583459&fm=26&gp=0.jpg" alt="">
- <img   class="cat"   id="cat3" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537439359473&di=94af89f7165210577af8d9682ca7b90b&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F031763d577b43b30000018c1bcaaa23.jpg" alt="">
- <br>
- <img   id="fish"   src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537438350926&di=d40ad5be9fac73fbcebfcbec85a88739&imgtype=0&src=http%3A%2F%2Fd.hiphotos.baidu.com%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3D88c8f471f9039245a1e0e90bb2a488f4%2F9a504fc2d5628535aedbd09d95ef76c6a7ef6356.jpg" alt="fish">
+	<h3>金币 拖入 钱袋 的时候消失</h3>
+	<img id="coin1" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<img id="coin2" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<img id="coin3" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<br>
+	<img class="bag" id="bag" src="https://img1.baidu.com/it/u=1595129334,3379693149&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+	alt="">
 </body>
 <script>
-    //要想从数据库中删除猫咪，就需要猫咪的图片地址是后台传值过来的，然后循环遍历在页面中，当拖动删除的时候，删除掉数据库中的数据即可；然后刷新页面
-    var  cat = document.getElementsByClassName('cat')//找到所有的猫咪
-    for(var i = 0;i<cat.length;i++){
-        var catSingle = cat[i];
-        catSingle.ondragstart  = function(e){//循环遍历猫咪，当dragstart拖动开始的时候，setData设置他的id到e.dataTransfer中
-            e.dataTransfer.setData('catId',this.id);
-        }
-    }
-    fish.ondragenter = function(){//当如到鱼种时候，让鱼的透明度为1；
-        console.log('已经拖入')
-        fish.style.opacity ='1';
-    }
-    fish.ondragleave = function () {//拖动离开鱼的时候
-        console.log('拖动离开');
-        fish.style.opacity ='.2';
-    }
-    fish.ondragover = function (e) {//拖动悬浮在鱼上
-        e.preventDefault()
-    }
-    fish.ondrop = function(e){//拖动放开时候；获取拖动开始时候设置的数据；然后从dom结构中移除；
-        console.log('放开拖动')
-        fish.style.opacity = '.2'
-        var id = e.dataTransfer.getData('catId')
-        console.log(id)
-        var dragId = document.getElementById(id);
-        dragId.parentNode.removeChild(dragId)
-    }
-
+	const coin = document.getElementsByClassName('coin')
+	for (let i = 0; i < coin.length; i++) {
+		const coinSingle = coin[i];
+		coinSingle.ondragstart = function (e) {
+			e.dataTransfer.setData('coinId', this.id);
+		}
+	}
+	bag.ondragenter = function () {
+		console.log('进入钱袋')
+		bag.style.opacity = '1';
+	}
+	bag.ondragleave = function () {
+		console.log('离开钱袋');
+		bag.style.opacity = '.2';
+	}
+	bag.ondragover = function (e) {
+		console.log('钱袋内移动');
+		e.preventDefault()
+	}
+	bag.ondrop = function (e) {
+		console.log('放开拖动')
+		const id = e.dataTransfer.getData('coinId')
+		console.log(id + '投入钱袋')
+		const dragId = document.getElementById(id);
+		dragId.parentNode.removeChild(dragId)
+	}
 </script>
+
 </html>

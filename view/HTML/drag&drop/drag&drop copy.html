@@ -18,7 +18,6 @@
     </style>
 </head>
 <body>
-    <h3>随着鼠标拖动而移动的小猫咪</h3>
     <img id="cat" src="https://i1.hdslb.com/bfs/face/84ffc31cf80b06b84400c26355e82b925ff15f0e.jpg@96w_96h_1c_1s.webp" alt=""/>
 </body>
 <script>
@@ -27,6 +26,7 @@
         console.log('start move')
         offsetX = e.offsetX
         offsetY = e.offsetY
+        console.log(e)
     }
     cat.ondrag = function (e) {
         console.log('on moving')
@@ -36,8 +36,8 @@
         if (x === 0 && y === 0) return
         x -= offsetX
         y -= offsetY
-        cat.style.left = x + 'px'
-        cat.style.top = y + 'px'
+        cat.style.left = e.pageX + 'px'
+        cat.style.top = e.pageY + 'px'
     }
     cat.ondragend = function (e) {
         console.log('move end')

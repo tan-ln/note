@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+		body {
+			text-align: center;
+		}
+		img {
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			margin: 20px;
+		}
+		#bag {
+			width: 200px;
+			height: 200px;
+			margin-top: 200px;
+			opacity: .2;
+		}
+	</style>
+</head>
+<body>
+  <h3>金币 拖入 钱袋 的时候消失</h3>
+	<img id="coin1" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<img id="coin2" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<img id="coin3" class="coin" src="https://img2.baidu.com/it/u=1887149691,564116742&fm=253&fmt=auto&app=138&f=JPEG?w=330&h=325" alt="coin">
+	<br>
+	<img class="bag" id="bag" src="https://img1.baidu.com/it/u=1595129334,3379693149&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+	alt="">
+</body>
+<script>
+  const coins = document.getElementsByClassName('coin')
+  for (let i = 0; i < coins.length; i++) {
+    coins[i].ondragstart = function (e) {
+      e.dataTransfer.setData('coin_id', this.id)
+      console.log('drag start : ' + this.id)
+    }
+  }
+  bag.ondragenter = function (e) {
+    console.log('drag enter bag')
+    bag.style.opacity = 1
+  }
+  bag.ondragleave = function (e) {
+    console.log('drag leave bag')
+    bag.style.opacity = .2
+  }
+  bag.ondragover = function (e) {
+    e.preventDefault()
+  }
+  // ondragover preventDefault 时才会触发
+  bag.ondrop = function (e) {
+    bag.style.opacity = .2
+    const coin_id = e.dataTransfer.getData('coin_id')
+    const coin = document.getElementById(coin_id)
+    document.body.removeChild(coin)
+    console.log(coin_id + ' : drop into the bag')
+  }
+</script>
+</html>
