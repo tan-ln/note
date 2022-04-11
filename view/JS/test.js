@@ -1,0 +1,1 @@
+// console.log([...Array(5)].fill('a'));   // [ 'a', 'a', 'a', 'a', 'a' ]
