@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        position: relative;
+        /* 脱离文档流 */
+        float: left;
+      }
+
+      /*  */
+      .resizable {
+        width: 200px;
+        height: 200px;
+        overflow: scroll;
+        resize: horizontal;
+        cursor: ew-resize;
+        opacity: 0;
+        min-width: 100px;
+      }
+        /* 更改拖拽图标的大小和父容器一样大 */
+      .resizable::-webkit-scrollbar {
+        width: 20px;
+        height: 200px;
+      }
+
+      /* 使用定位, 将容器定位到父容器的正中间, 跟着父容器的大小改变而改变 */
+      .content {
+        margin: 0;
+        height: 200px;
+        position: absolute;
+        top: 0;
+        /* 留出5px为了鼠标放上去可以显示拖拽 */
+        right: 5px;
+        bottom: 0;
+        left: 0;
+        border: 1px solid;
+        background-color: rgb(177, 65, 65);
+      }
+    </style>
+  </head>
+
+  <body>
+      <div class="container">
+        <!-- resizable 用于拖拽的工具 -->
+        <div class="resizable"></div>
+        <!-- content 要展示的内容区域 -->
+        <div class="content">content</div>
+      </div>
+    </body>
+</html>
