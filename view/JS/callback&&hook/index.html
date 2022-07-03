@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script >
+        $(function () {
+            console.time("timer")
+            /* $("button").click(() => {
+                 console.log("回调函数测试")
+             })*/
+ 
+            console.timeEnd("timer")
+            console.time("timer2")
+            /* $("button").on("click", () => {
+                 console.log("钩子函数测试")
+             })*/
+            document.getElementsByTagName("button")[0]
+                .addEventListener("click", () => {
+                    alert("我是回调函数")
+                    document.getElementsByTagName("button")[0]
+                        .onclick = () => {
+                        alert("我是钩子函数")
+                    }
+                })
+            console.timeEnd("timer2")
+        });
+    </script>
+</head>
+<body>
+<h1>对比一下</h1>
+<button>1222</button>
+</body>
