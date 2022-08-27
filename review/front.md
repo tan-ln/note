@@ -293,3 +293,59 @@ const height = document.documentElement.clientHeight || document.body.clientHeig
 13. 骨架屏
 14. 防抖节流
 15. 减少回流
+
+## windows 前端缩放
+> css 在使用 vh 单位时，IOS 下正常但 windows 笔记本 100vh 高度不正常，部分笔记本自带缩放
+
+```css
+.xxx {
+  width: calc(100vw / var(--zoom));
+  height: calc(100vh / var(--zoom));
+}
+
+.box {
+  width: calc(100vw - 20px);
+  /* 需写 成 */
+  width: calc(100vw / var(--zoom) - 20px);
+}
+```
+
+> js 做缩放
+```js
+export const detectZoom = () => {
+  let ratio = 0,
+    screen = window.screen,
+    ua = navigator.userAgent.toLowerCase()
+  if (window.devicePixelRatio !== undefined) {
+    ratio = window.devicePixelRatio
+  } else if (~ua.indexOf('msie')) { // IE
+    if ((screen as any).deviceXDPI && (screen as any).logicalXDPI) {
+      ratio = (screen as any).deviceXDPI / (screen as any).logicalXDPI
+    }
+  } else if (
+    window.outerWidth !== undefined &&
+    window.innerWidth !== undefined
+  ) {
+    ratio = window.outerWidth / window.innerWidth
+  }
+  if (ratio) {
+    ratio = Math.round(ratio * 100)
+  }
+  return ratio
+}
+
+// 处理 windows 笔记本系统默认系统比例为 150% 带来的布局影响
+// 只针对 windows 处理，其它系统暂无该情况
+if (navigator.userAgent.toLowerCase().includes('windows')) {
+  const m = detectZoom()
+  const zoom = String(100 / Number(m))
+
+  document.body.style.zoom = zoom
+  //设置css变量值
+  document.documentElement.style.setProperty('--zoom', zoom)
+} else {
+  document.body.style.zoom = '1'
+  //设置css变量值
+  document.documentElement.style.setProperty('--zoom', '1')
+}
+```
