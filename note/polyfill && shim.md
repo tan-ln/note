@@ -1,24 +1,32 @@
 # Shim && Polyfill
 
-## `Shim`
+## Shim
 
 > Shim 垫片，可以理解为一种`透明`的库，能够*拦截对 API 的调用*，并且*改变它的参数传递*、*处理操作本身*或*重定向操作到其他位置*
 
 透明：指的是某见事情的发生对这个系统的其他部分是感知不到的，或者称之为穿透
 
-`shim` 可以在新环境支持老的 `API`，比如已废除的 API，而且仅靠旧环境中已有的手段实现
+`shim` 可以在新环境支持老的 `API`，比如已废除的 API，而且仅靠旧环境中已有的手段实现；
+
+​	 或者在老的环境支持新的 `API`；
+
+​	 甚至可以支持在不同开发平台运行程序
 
 如：
-1. `HTML5 shiv`
-2. `Autoperfixer`
+1. `HTML5 shiv`（H5 标签兼容）
+2. `CSS Autoperfixer`
 3. `es6-shim`
 4. `Vue` 响应式原理 `Object.definePorperty` 是 `ES5` 无法 `Shim` 的特性，所以不支持 IE8 及以下
 
-## `Polyfill`
+## Polyfill
 
 > 我们在需要部署的环境*不支持新的 JavaScript 内置函数*（如 `Object.assign` 或 `Promise.any`），或 *旧版本浏览器* 不支持的一些 `Web API`（如 `Fetch` 或 Dom 中的 `document.querySelector`）时，可以通过 `polyfill` 来实现
 
 **Web Polyfill 其实特指在老版本的 Web 环境上以某种方式去实现新的 Web API 标准的一种 Shim，其本质是抹平不同浏览器直接的 API 差异，而非实现新的 API**
+
+ 	1. es6-promise
+ 	2. object.is()
+ 	3. core-js(@babel)
 
 
 ## Case
@@ -59,6 +67,7 @@
 ```
 
 ### `es6-promise`
+- `polyfill.js`
 ```js
 import Promise from './promise';
 
@@ -96,10 +105,54 @@ export default function polyfill() {
 }
 ```
 
+- `Promise.js`
+```js
+// Promise.js
+import all from './promise/all';
+import race from './promise/race';
+import Resolve from './promise/resolve';
+import Reject from './promise/reject';
+import then from './then';
+
+class Promise {
+  constructor(resolver) {
+    this[PROMISE_ID] = nextId();
+    this._result = this._state = undefined;
+    this._subscribers = [];
+
+    if (noop !== resolver) {
+      typeof resolver !== 'function' && needsResolver();
+      this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+    }
+  }
+  catch(onRejection) {
+    return this.then(null, onRejection);
+  }
+  finally(callback) {
+    let promise = this;
+    let constructor = promise.constructor;
+
+    if ( isFunction(callback) ) {
+      return promise.then(value => constructor.resolve(callback()).then(() => value),
+                         reason => constructor.resolve(callback()).then(() => { throw reason; }));
+    }
+
+    return promise.then(callback, callback);
+  }
+}
+Promise.prototype.then = then;
+export default Promise;
+Promise.all = all;
+Promise.race = race;
+Promise.resolve = Resolve;
+Promise.reject = Reject;
+```
+
 
 ### `Object.is`
 
-ES6 相等性判断：
+> [`ES6` 相等性判断](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness):
+
 ```js
 === 严格相等
 == 非严格相等
@@ -110,7 +163,7 @@ NaN === NaN 同值相等
 
 `Object.is()` 就是使用的 **同值相等** 来判断相等性的
 
-> `MDN` 中对 `Object.is()` 的 `Polyfill` 写法
+> [`MDN` 中对 `Object.is()` 的 `Polyfill` 写法](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is):
 ```js
 if (!Object.is) {
   Object.defineProperty(Object, "is", {
@@ -158,7 +211,7 @@ polyfill()
 
 ```
 
-## `Polyfill` 与 `Babel`
+## Polyfill 与 Babel
 
 `babel` 源代码到源代码的编译器，通常 `babel` 做的事情是转换 `transform，比如将` `ES6+` 的代码转换为向后兼容的语法
 
@@ -174,7 +227,7 @@ polyfill()
 * babel-runtime
 * babel-plugin-transform-runtime
 
-### `babel-polyfill`
+### babel-polyfill
 
 ```js
 // index.js
@@ -300,22 +353,26 @@ module.exports = {
 - 避免 babel 编译的工具函数在每个模块里重复出现，减小库和工具包的体积
 
 
-## `Shim` && `Polyfill` 区别
+## Shim && Polyfill 区别
 
 1. `Shim` 是一个库，而一个 `polyfill` 是一段代码（或者插件）
 
 2. `shim` 针对的是环境，`polyfill` 针对的是 `API`
 
-3. `shim` 不在意、旧环境是否存在某 API，而是直接改变全局对象，为旧环境提供新功能，从而创建一个新的环境；      
+3. `shim` 不在意、旧环境是否存在某 API，而是直接改变**全局对象**，为旧环境提供新功能，从而**创建一个新的环境**；      
     `Polyfill` 则会判断旧环境是否存在 API ，不存在时才会添加
 
-Polyfill 可以理解为在 Web 环境下的 Shim 真子集?
-
-
+Polyfill 可以理解为在 Web 环境下的 Shim 子集?
 
 ## 哪些可以被 `Polyfill`
 1. 浏览器已经暴露的 API，由于不够好用，而在新版本做了改动，这类是比较好 Polyfill 的
+
 2. CSSOM / CSS Houdini
+
+   > [MDN CSS Houdini](https://developer.mozilla.org/zh-CN/docs/Web/Guide/Houdini)
+   >
+   > [CSS Houdini: 用浏览器引擎实现高级CSS效果](https://blog.csdn.net/vivo_tech/article/details/125640206)
+
 3. ...
 
 
