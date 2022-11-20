@@ -6,7 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shadow Dom</title>
 </head>
-<body>
-  
-</body>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<script>
+  window.addEventListener('load', function () {
+    // Shadow root
+    const root = document.createElement('div')
+    root.setAttribute('class', 'shadow-root')
+    // 创建 Shadow Dom
+    const shadow  = root.attachShadow({ mode: 'open' })
+    const p = document.createElement('p')
+    p.innerText = 'i am a tag inn a shadow dom'
+    // 通过 DOM 操作将元素插入 Shadow Dom
+    shadow.appendChild(p)
+    // 将 Shadow Dom 挂载到 document
+    document.body.appendChild(root)
+
+    // console.log(document.querySelector('.shadow-root').shadowRoot)
+    // document.querySelector('.shadow-root').shadowRoot.querySelector('p').style.background = 'red'
+
+    const style = document.createElement('style')
+    style.textContent = `
+      p {
+        font-size: 20px;
+        background: blue;
+      }
+    `
+    document.querySelector('.shadow-root').shadowRoot.appendChild(style)
+  })
+</script>
+<body></body>
 </html>
