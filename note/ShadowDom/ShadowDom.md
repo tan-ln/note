@@ -4,7 +4,7 @@
 
 ​	Shadow Dom：影子 Dom，可以理解为潜藏在背后的 DOM 结构，也就是我们无法直接控制操做的 DOM 结构。
 
-![Shadow Dom Open](./assets//shadowdom/shadow-root.png)
+![Shadow Dom Open](./assets/shadow-root.png)
 
 图中的 `#shadow-root` 中包含的内容其实就是 `Shadow-Dom`
 
@@ -12,7 +12,7 @@
 
 它相当于一个 **作用域** 的概念，使其不会被外部所影响。可以把它理解成一颗单独的dom树。这样就不会有 css 的命名冲突或者样式的意外泄漏。
 
-![打开Shadow Dom](./assets//shadowdom/show-shadow-dom.png)
+![打开Shadow Dom](./assets/show-shadow-dom.png)
 
 
 通过上图方式启用开发者工具的 `Show user agent shadow DOM` 可以看到原本隐藏的结构。
@@ -20,7 +20,7 @@
 
 > ### Shadow Dom 的构成
 
-<img src="./assets//shadowdom/shadowdom.svg" alt="Shadow Dom" style="zoom: 80%;" />
+<img src="./assets/shadowdom.svg" alt="Shadow Dom" style="zoom: 80%;" />
 
 
 
@@ -57,13 +57,13 @@
 
 
 
-![video](./assets//shadowdom/video.png)
+![video](./assets/video.png)
 
 
 
 > 这些功能的具体实现其实都在 `shadow-dom` 之中：
 
-![video shadow-dom](./assets//shadowdom/video-shadow-dom.png)
+![video shadow-dom](./assets/video-shadow-dom.png)
 
 
 
@@ -94,9 +94,11 @@
   })
 ```
 
-![create-shadow-dom](./assets//shadowdom/create-shadow-dom.png)
 
 > #### 获取 Shadow Dom：`element.shadowRoot`
+
+
+![get-shadow-dom](./assets/get-shadow-dom.png)
 
   然后就可以通过 DOM 操作，控制 Shadow Dom 中的元素
 
@@ -106,7 +108,6 @@ document.querySelector('.shadow-root').shadowRoot
     	.style.background = 'red'
 ```
 
-![get-shadow-dom](./assets//shadowdom/get-shadow-dom.png)
 
 > ### 为 `Shadow Dom` 中的元素添加样式
 
@@ -182,7 +183,7 @@ mutation.observe(container, options);
 
 Firefox（从版本 63 开始），Chrome，Opera 和 Safari 默认支持 Shadow DOM。基于 Chromium 的新 Edge 也支持 Shadow DOM；而旧 Edge 未能撑到支持此特性
 
-![can i use shadow dom](./assets/shadowdom/caniuse-shadowdom.png)
+![can i use shadow dom](./assets/caniuse-shadowdom.png)
 
 
 
