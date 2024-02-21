@@ -349,3 +349,194 @@ if (navigator.userAgent.toLowerCase().includes('windows')) {
   document.documentElement.style.setProperty('--zoom', '1')
 }
 ```
+
+
+## 浏览器进程
+
+现代浏览器分为两种架构：多进程、单进程
+
+chrome 多进程：
+
+- Browser 进程：负责处理地址栏、前进后退、书签、网络请求
+- Renderer 进程：负责一个 tab 页签内所有渲染相关的所有 **最核心**
+- GPU 进程：
+- Plugin 进程
+
+
+## Renderer 进程包含
+
+- GUI 渲染线程：解析 HTML 构建 DOM 树，解析 CSS 构建 CSS 规则树，
+- JS 引擎线程
+  执行 JS 的线程，js 单线程指的就是这个线程
+  这个线程与 GUI 线程互斥，长时间的同步代码执行`（while(true)）`将会阻塞渲染，导致卡顿甚至白屏卡死
+
+- 定时触发器线程
+  setTimeout | setInterval 都是在这个线程，他与 js 主线程不在同一个地方，所以单线程的js可以实现异步
+
+- 事件触发线程
+  定时器线程其实只是起到一个定时的作用，并不会在定的时间到了之后执行回调，真正执行这个回调的还是主线程；
+  时间到了之后，定时器会将这个回调事件给到事件触发线程，然后事件触发线程将会将他放到事件队列当中去；
+  最终 js 主线程从事件队列中读取这个回调执行；
+  事件触发线程不仅会把定时器事件放入任务队列，其他满足条件的事件也是由他放入队列
+
+- 异步 HTTP 请求线程
+  这个线程负责处理异步 ajax 请求，请求完成后，也是会通知事件触发线程，事件触发线程将这个事件放入事件队列，给主线程执行
+
+
+所以 js 的异步就是靠浏览器的多线程，当遇到异步任务时，就将这个任务交给对应的线程，满足条件又通过事件触发线程将这个事件放入任务队列，然后主线程从任务队列中依次取出事件继续执行。
+
+
+
+## 事件循环
+
+js 的主要运行环境有两个：浏览器、Node.js
+
+
+### 浏览器的事件循环
+
+1. 先区分同步任务还是异步任务
+2. 同步任务直接执行，异步任务交给对应的线程，主线程继续同步任务
+3. 执行异步任务的线程等到异步任务有了结果时，将异步任务回调放入事件队列
+4. 主线程执行栈执行完后，读取事件队列中的回调，
+5. 主线程不断循环上门的流程
+
+
+> 定时器不准的问题
+
+事件循环这个流程，最典型的问题就是：先执行同步任务，再执行事件队列中的异步任务回调
+
+如果主线程被阻塞，异步任务的回调就会一直等待，可能导致定时器不准确
+
+
+```js
+const syncFunc = (startTime) => {
+  const time = new Date().getTime();
+  while(true) {
+    if(new Date().getTime() - time > 5000) {
+      break;
+    }
+  }
+  const offset = new Date().getTime() - startTime;
+  console.log(`syncFunc run, time offset: ${offset}`);
+}
+
+const asyncFunc = (startTime) => {
+  setTimeout(() => {
+    const offset = new Date().getTime() - startTime;
+    console.log(`asyncFunc run, time offset: ${offset}`);
+  }, 2000);
+}
+
+const startTime = new Date().getTime();
+
+asyncFunc(startTime);
+
+syncFunc(startTime);
+
+// syncFunc run, time offset: 5007
+// asyncFunc run, time offset: 5014
+```
+
+结果可见：2s 的定时器，5s 后才执行回调
+
+
+## 宏任务与微任务
+
+事件循环中的任务可以分为 宏任务和微任务，微任务的优先级高于宏任务
+
+当事件循环遍历事件队列时，先检查微任务队列，如果里面有任务就全部拿来执行，执行完成后在执行一个宏任务
+
+每次执行完一个宏任务后，先检查微任务队列是否有任务，有则优先执行所有的微任务
+
+![事件队列](./assets/事件队列.webp)
+
+
+
+> 注意：
+1. 一个事件循环中可能有多个事件队列，但是只有一个微任务队列
+2. 微任务队列全部执行完会渲染一次
+3. 每一个宏任务执行完也会渲染一次
+4. requestAnimationFrame 处于渲染阶段，不属于宏任务或者微任务
+
+
+
+
+**宏任务**
+1. setTimeout / setInterval
+2. setImmediate （node.js）
+3. I/O (文件读取、网络请求)
+4. UI 事件
+5. postMessage
+
+**微任务**
+1. promise.then() catch() 等回调函数 
+2. process.nextTick (node.js)
+3. MutationObserver
+
+
+
+promise 会在 setTimeout 之前执行，因为 promise 是微任务
+```js
+console.log('1');
+setTimeout(() => {
+  console.log('2');
+},0);
+Promise.resolve().then(() => {
+  console.log('5');
+})
+new Promise((resolve) => {
+  console.log('3');
+  resolve();
+}).then(() => {
+  console.log('4');
+})
+```
+
+执行顺序是：1、3、5、4、2
+
+
+
+
+## setTimeout && setImmediate && process.nextTick && promise
+
+- setImmediate：将事件注入到事件队列尾部，主线程同步任务和事件队列中的回调执行完毕后，立即执行
+
+- process.nextTick：微任务，优先与宏任务（setTimeout、setImmediate）执行，且优先与其他微任务（promise.then）
+
+setTimeout(fn, 0) 和 setImmediate(fn) 谁先执行？
+
+同一事件循环中，触发顺序不固定，看是哪个阶段注册的
+一般来说：
+1. I/O （文件读取、网络请求）中 setImmediate 优先
+2. 其他情况 setTimeout(fn, 0) 优先
+
+```js
+const fs = require('fs')
+fd.readFile('./a.txt',  () => {
+  setTimeout(() => {
+    console.log('fs -> setTimeout')
+  }, 0)
+  setImmediate(() => {
+    console.log('fs -> setImmediate')
+  })
+})
+
+// fs -> setTimeout
+// fs -> setImmediate
+```
+
+
+
+> 浏览器环境 HTML5 setTimeout 最小时间限制是 4ms
+
+
+
+
+
+
+
+
+
+[](https://segmentfault.com/a/1190000023315304)
+
+[浅谈浏览器架构、单线程js、事件循环、消息队列、宏任务和微任务](https://github.com/FrankKai/FrankKai.github.io/issues/228)
