@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  div[popover]::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  div[popover] {
+    padding: 12px;
+    border: none;
+    transform: scale(1);
+    transition: .3s;
+  }
+
+  @starting-style {
+    div[popover] {
+      transform: scale(0);
+    }
+  }
+</style>
+<body>
+  <div id="pop" popover>
+    弹出内容
+  </div>
+  <button popovertarget="pop">打开</button>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault(); // 阻止默认的关闭事件
+      // 调用接口
+      fetch('/api/abc')
+        .then(response => {
+          console.log('Logout successful');
+        })
+        .catch(error => {
+          console.error('Logout failed:', error);
+        });
+      return ''; // 返回一个空字符串，允许关闭
+    });
+  </script>
+</body>
+</html>

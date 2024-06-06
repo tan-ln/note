@@ -25,7 +25,7 @@ class Subject {
 class Observer {
   event = {}
 
-  subccribe(type, fn) {
+  subscribe(type, fn) {
     sub.addObserver(this)
   }
 }
@@ -38,5 +38,5 @@ ob.update = function () {
   console.log('observer update')
 }
 
-ob.subccribe(sub)                 // 订阅动作
+ob.subscribe(sub)                 // 订阅动作
 sub.notify()

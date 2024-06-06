@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function throttle (fn, delay, immediate = false) {
+      let timer = null
+      // 执行首次
+      let firstTime = true
+      return function (...args) {
+        if (timer) {
+          return
+        }
+
+        if (immediate && firstTime && !timer) {
+          fn.apply(fn, args)
+          firstTime = false
+        }
+
+        timer = setTimeout(() => {
+          fn.apply(fn, args)
+          clearTimeout(timer)
+          timer = null
+        }, delay);
+      }
+    }
+    function show () {
+      console.log(new Date())
+    }
+
+    // window.addEventListener('mousemove', throttle(show, 1000, true))
+
+  </script>
+
+  <script>
+    // 时间戳版本
+    function _throttle (fn, delay, immediate = false) {
+      let prevTime = Date.now()
+      let isFirst = true
+      return function (...args) {
+
+        if (isFirst && immediate) {
+          isFirst = false
+          fn.apply(this, args)
+        }
+
+        let nowTime = Date.now()
+        if (nowTime - prevTime >= delay) {
+          fn.apply(this, args)
+          prevTime = Date.now()
+        }
+      }
+    }
+
+    function time () {
+      console.log(Date.now())
+    }
+
+    window.addEventListener('mousemove', _throttle(time, 2000, true))
+  </script>
+</body>
+</html>

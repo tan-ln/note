@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function debounce (fn, delay = 1000, immediate = false) {
+      let timer = null
+      return function (...args) {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        // 首次执行
+        if (immediate && !timer) {
+          fn.apply(this, args)
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+        }, delay)
+      }
+    }
+
+    function show () {
+      console.log(new Date())
+    }
+
+    const handleFn = debounce(show, 800, true)
+
+    window.addEventListener('mousemove', handleFn)
+
+  </script>
+</body>
+</html>

@@ -124,3 +124,13 @@
 // console.log(a)
 // console.log(b)
 // console.log(c)
+
+const getType = s => Object.prototype.toString.call(s)
+const regType = 'object Regexp'
+const dateType = 'object Date'
+const specTypes = [regType, dateType]
+
+const deepCopy = (source) => {
+  if (!source || source === null) return source
+  if (getType(source))
+}

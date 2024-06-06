@@ -462,6 +462,11 @@ syncFunc(startTime);
 
 
 **宏任务**
+
+可以理解为：由事件循环在浏览器中异步执行的代码块，通常与 定时器、网络请求、I/O操作 关联
+
+宏任务执行完一个，在执行下一个之前会渲染页面
+
 1. setTimeout / setInterval
 2. setImmediate （node.js）
 3. I/O (文件读取、网络请求)
@@ -469,6 +474,9 @@ syncFunc(startTime);
 5. postMessage
 
 **微任务**
+
+微任务是在每次执行完宏任务之后、下一次宏任务之前、渲染之前执行的任务
+
 1. promise.then() catch() 等回调函数 
 2. process.nextTick (node.js)
 3. MutationObserver
@@ -532,7 +540,26 @@ fd.readFile('./a.txt',  () => {
 
 
 
+## content-type
+application/json
+application/xml
+application/x-www-form-urlencode
+application/octet-stream
+multipart/form-data
 
+## response-type
+json
+blob
+arrayBuffer
+
+
+## requestAnimationFrame
+
+请求动画帧
+
+用于优化动画效果，丝滑
+
+根据设备浏览器的刷新率，在每次渲染之前或者说两次渲染之间执行一次回调，
 
 
 
@@ -540,3 +567,48 @@ fd.readFile('./a.txt',  () => {
 [](https://segmentfault.com/a/1190000023315304)
 
 [浅谈浏览器架构、单线程js、事件循环、消息队列、宏任务和微任务](https://github.com/FrankKai/FrankKai.github.io/issues/228)
+
+
+## axios
+
+> axios 中断请求
+1. `Axios` 使用了 `CancelToken` 和 `cancel` 方法来实现请求的取消
+
+```js
+var CancelToken = axios.CancelToken;
+var source = CancelToken.source();
+
+// 取消请求
+source.cancel("请求被取消");
+```
+
+- axios.isCancel()
+```js
+axios.get("/data", {
+  cancelToken: source.token
+})
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    if (axios.isCancel(error)) {
+      console.log("请求被取消：", error.message);
+    } else {
+      console.log("请求错误：", error);
+    }
+  })
+```
+
+2. 通过 `AbortController` 中断请求，这是 `fetch` 的 api, *CancelToken API被弃用*
+```js
+const controller = new AbortController();
+
+axios.get('/foo/bar', {
+   signal: controller.signal
+}).then(function(response) {
+   //...
+});
+// cancel the request
+controller.abort()
+```
+
