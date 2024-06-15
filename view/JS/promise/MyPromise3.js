@@ -147,6 +147,151 @@ class MyPromise3 {
   catch (errCallback) {
     return this.then(null, errCallback)
   }
+
+  finally (finallyCallback) {
+    return this.then(
+      (value) => MyPromise3.resolve(
+        finallyCallback()
+      ).then(() => value),
+      (reason) => MyPromise3.resolve(
+        finallyCallback()
+      ).then(() => { throw reason })
+    )
+  }
+
+  // 静态方法 由构造函数或类直接调用，而非实例调用
+  static resolve (value) {
+    return new MyPromise3((resolve, reject) => {
+      if (value instanceof MyPromise3) {
+        value.then(
+          (res) => {
+            resolve(res)
+          },
+          (err) => {
+            reject(err)
+          }
+        );
+      } else {
+        resolve(value)
+      }
+    });
+  }
+
+  static reject (error) {
+    return new MyPromise3((resolve, reject) => {
+      reject(error)
+    })
+  }
+
+  static all (list) {
+    const result = []
+    let count = 0
+
+    return new MyPromise3((resolve, reject) => {
+      function addResult (key, value) {
+        result[key] = value
+        count++
+        if (count === list.length) {
+          resolve(result)
+        }
+      }
+
+      for (let i = 0; i < list.length; i++) {
+        const current = list[i]
+        if (current instanceof MyPromise3) {
+          current.then(val => {
+            addResult(i, val)
+          }, err => {
+            reject(err)
+          })
+        } else {
+          addResult(i, current)
+        }
+      }
+    })
+  }
+
+  static race (pList) {
+    return new MyPromise3((resolve, reject) => {
+      pList.forEach(p => {
+        p.then((value) => {
+          resolve(value)
+        }, (reason) => {
+          reject(reason)
+        })
+      })
+    })
+  }
+
+  static allSettled (pList) {
+    return new MyPromise3((resolve, reject) => {
+      const result = []
+      let count = 0
+
+      function setResult (key, val) {
+        result[key] = val
+        count++
+        if (count === pList.length) {
+          resolve(result)
+        }
+      }
+
+      for (let i = 0; i < pList.length; i++) {
+        const current = pList[i]
+
+        if (current instanceof MyPromise3) {
+          current.then(
+            (value) => setResult(i, {
+              status: 'fulfilled', 
+              value
+            }),
+            (reason) => 
+              setResult(i, {
+                status: 'rejected',
+                reason
+              })
+          ).catch(err => {
+            setResult(i, {
+              status: 'rejected',
+              reason: err
+            })
+          })
+        } else {
+          // 普通类型
+          setResult(i, current)
+        }
+      }
+    })
+  }
+
+  static any (pList) {
+    return new Promise((resolve, reject) => {
+      const rejectResult = []
+      let count = 0
+
+      function addRejectedResult (key, val) {
+        rejectResult[key] = val
+        count++
+        if (count === pList.length) {
+          reject(rejectResult)
+        }
+      }
+
+      for (let i = 0; i < pList.length; i++) {
+        const current = pList[i]
+
+        if (current instanceof MyPromise3) {
+          current.then((value) => {
+            resolve(value)
+          }, (reason) => {
+            addRejectedResult(i, reason)
+          })
+        } else {
+          resolve(current)
+        }
+      }
+    })
+  }
 }
 
 module.exports = MyPromise3
