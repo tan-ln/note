@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      padding-top: 190px;
+      margin-left: 103px;
+    }
+    .hexagon {
+      width: calc(190px / 0.866);
+      height: 190px;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      background-color: #ff0022;
+    }
+    .hexagon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 9;
+    }
+    .hexagon.bordered::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(180px / 0.866);
+      height: 180px;
+      background-color: #ffffff;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      z-index: -1;
+    }
+    .hexagon.bordered::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(175px / .866);
+      height: 175px;
+      background-color: #2d4384;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      z-index: -1;
+    }
+    .hexagon > img {
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      object-fit: cover;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+    .hexagon:hover {
+      transition: all .3s;
+      transform: scale(1.2);
+      z-index: 999;
+    }
+    .hexagon-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    </style>
+</head>
+<body>
+  <div class="container" style="--moveX: 54.848px; --boxWidth: calc(190px / 0.866 - 4px); --boxHeight: calc(190px - 5px)">
+    <!-- col 1 -->
+    <div data-index="1-1" class="hexagon-container" style="left: 0; top: calc(var(--boxHeight));">
+      <div class="hexagon bordered">
+        <span>1 - 1</span>
+      </div>
+    </div>
+    <div data-index="1-2" class="hexagon-container" style="left: 0; top: calc(var(--boxHeight) * 3)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="1-3" class="hexagon-container" style="left: 0; top: calc(var(--boxHeight) * 4)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <!-- col 2 -->
+    <div data-index="2-1" class="hexagon-container" style="left: calc(var(--boxWidth) - var(--moveX)); top: calc(var(--boxHeight) / 2);">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="2-2" class="hexagon-container" style="left: calc(var(--boxWidth) - var(--moveX)); top: calc(var(--boxHeight) * 1.5)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="2-3" class="hexagon-container" style="left: calc(var(--boxWidth) * 1 - var(--moveX)); top: calc(var(--boxHeight) * 2.5)">
+      <div class="hexagon bordered">
+        <span>2-3</span>
+      </div>
+    </div>
+    <div data-index="2-4" class="hexagon-container" style="left: calc(var(--boxWidth) - var(--moveX)); top: calc(var(--boxHeight) * 4.5)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <!-- col 3 -->
+    <div data-index="3-1" class="hexagon-container" style="left: calc(var(--boxWidth) * 1.5); top: calc(var(--boxHeight) * 1)">
+      <div class="hexagon bordered">
+        <span>3-1</span>
+      </div>
+    </div>
+    <div data-index="3-2" class="hexagon-container" style="left: calc(var(--boxWidth) * 1.5); top: calc(var(--boxHeight) * 2)">
+      <div class="hexagon bordered">
+        <span>3-2</span>
+      </div>
+    </div>
+    <div data-index="3-3" class="hexagon-container" style="left: calc(var(--boxWidth) * 1.5); top: calc(var(--boxHeight) * 3)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="3-4" class="hexagon-container" style="left: calc(var(--boxWidth) * 1.5); top: calc(var(--boxHeight) * 4)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <!-- col 4 -->
+    <div data-index="4-1" class="hexagon-container" style="left: calc(var(--boxWidth) * 2.5 - var(--moveX)); top: calc(var(--boxHeight) * 1.5)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="4-2" class="hexagon-container" style="left: calc(var(--boxWidth) * 2.5 - var(--moveX)); top: calc(var(--boxHeight) * 2.5)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <!-- col 5 -->
+    <div data-index="5-1" class="hexagon-container" style="left: calc(var(--boxWidth) * 3); top: calc(var(--boxHeight))">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="5-2" class="hexagon-container" style="left: calc(var(--boxWidth) * 3); top: calc(var(--boxHeight) * 3)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+    <div data-index="5-3" class="hexagon-container" style="left: calc(var(--boxWidth) * 3); top: calc(var(--boxHeight) * 4)">
+      <div class="hexagon">
+        <img src="../../assets/bg.png" alt="">
+      </div>
+    </div>
+  </div>
+  <script>
+    const height = 190 
+    const moveXDis = height / 2 / Math.sqrt(3)
+  </script>
+</body>
+</html>

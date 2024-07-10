@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    margin: 50px 100px;
+  }
+  .previewWrapper {
+    width: 400px;
+    height: 400px;
+    background-color: #000;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .previewContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  #previewImg {
+    object-fit: contain;
+    display: none;
+    user-select: none;
+    position: absolute;
+  }
+  .crop-box {
+    display: none;
+    position: absolute;
+    cursor: move;
+    border: 1px solid #fff;
+    z-index: 2;
+    box-sizing: border-box;
+  }
+  .drop-point {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #fff;
+    position: absolute;
+    box-sizing: border-box;
+  }
+  .point-lt {
+    left: -10px;
+    top: -10px;
+    cursor: nw-resize;
+  }
+  .point-rt {
+    top: -10px;
+    right: -10px;
+    cursor: ne-resize;
+  }
+  .point-lb {
+    bottom: -10px;
+    left: -10px;
+    cursor: sw-resize;
+  }
+  .point-rb {
+    bottom: -10px;
+    right: -10px;
+    cursor: se-resize;
+  }
+  .mask {
+    background-color: rgba(0, 0, 0, .5);
+    position: absolute;
+    width: inherit;
+    height: inherit;
+  }
+
+  .cutPreviewInMask {
+    display: none;
+    width: inherit;
+    height: inherit;
+  }
+  .resultPreview {
+    display: none;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+  }
+</style>
+<body>
+  <input id="fileInput" type="file" accept="image/*"/>
+  <div class="previewWrapper">
+    <div class="previewContent">
+      <img id="previewImg" src="#" alt="" />
+      
+      <!-- 剪裁区域 -->
+      <div class="crop-box" id="cropBox">
+        <span class="drop-point point-lt"></span>
+        <span class="drop-point point-rt"></span>
+        <span class="drop-point point-lb"></span>
+        <span class="drop-point point-rb"></span>
+        <img id="cutPreviewInMask" src="#" alt="">
+      </div>
+    </div>
+
+    <!-- 遮罩 -->
+    <div class="mask">
+    </div>
+  </div>
+
+  <!-- 结果预览 -->
+  <img id="resultPreview" src="#" alt="">
+
+  <script>
+    const resultWidth = 300
+    const resultHeight = 300
+    const inputEl = document.getElementById('fileInput')
+    const previewImgEl = document.getElementById('previewImg')
+    const previewContentEl = document.querySelectorAll('.previewContent')[0]
+    const cutPreviewInMaskEl = document.getElementById('cutPreviewInMask')
+    const resultPreviewEl = document.getElementById('resultPreview')
+    const cropBoxEl = document.querySelectorAll('.crop-box')[0]
+    const maskEl = document.querySelectorAll('.mask')[0]
+    inputEl.onchange = (e) => {
+      const file = e.target.files[0]
+      console.log('file', file)
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        // 图片 url
+        const dataUrl = ev.target.result
+        console.log('ev dataUrl', ev)
+
+        // 创建一个img元素
+        const img = document.createElement('img');
+        // 将DataURL设置给img元素的src属性
+        img.src = dataUrl;
+
+        // 监听img元素的load事件来获取图片的宽度和高度
+        img.addEventListener('load', function() {
+          // 获取图片的宽度和高度
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+
+          console.log(width, height)
+
+          // 计算宽高比
+          const aspectRatio = width / height;
+
+          console.log('图片的宽高比是:', aspectRatio);
+          const rr = aspectRatio > 1 ? width / 400 : height / 400
+          console.log('缩放比', rr)
+
+          // 预览
+          const previewImgWidth = aspectRatio > 1 ? 400 : (400 * aspectRatio)
+          const previewImgHeight = aspectRatio < 1 ? 400 : (400 / aspectRatio)
+          console.log(previewImgWidth, previewImgHeight)
+          previewContentEl.style.width = previewImgWidth + 'px'
+          previewContentEl.style.height = previewImgHeight + 'px'
+          previewImgEl.src = dataUrl
+          previewImgEl.style.width = previewImgWidth + 'px'
+          previewImgEl.style.height = previewImgHeight + 'px'
+          previewImgEl.style.display = 'block'
+
+          // 裁切区域
+          cropBoxEl.style.width = (aspectRatio > 1 ? previewImgHeight : previewImgWidth) + 'px'
+          cropBoxEl.style.height = (aspectRatio > 1 ? previewImgHeight : previewImgWidth) + 'px'
+          cropBoxEl.style.display = 'block'
+
+          // 获取剪裁区域的信息
+          const rect = cropBoxEl.getBoundingClientRect()
+          const { top, right, bottom, left, width: rectWith, height: rectHeight } = rect
+          maskEl.style.width = previewImgEl.style.width
+          maskEl.style.height = previewImgEl.style.height
+          console.log(rect, rectWith, rectHeight)
+
+          console.log(cropBoxEl.offsetTop, cropBoxEl.offsetLeft)
+
+          const cvs = document.createElement('canvas')
+          const ctx = cvs.getContext('2d')
+          cvs.width = rectWith * rr
+          cvs.height = rectHeight * rr
+          ctx.drawImage(img, cropBoxEl.offsetLeft * rr, cropBoxEl.offsetTop * rr, rectWith * rr, rectHeight * rr, 0, 0, rectWith * rr, rectHeight * rr)
+          // 生成文件上传后台
+          // cvs.toBlob((blob) => {
+          //   const file = new File([blob], 'cut.png', {
+          //     type: 'image/png'
+          //   })
+          //   console.log(file)
+          // })
+          // 结果预览
+          const result = cvs.toDataURL()
+          resultPreviewEl.src = result
+          resultPreviewEl.style.width = resultWidth + 'px'
+          resultPreviewEl.style.height = resultHeight + 'px'
+          resultPreviewEl.style.display = 'block'
+          // 
+          cutPreviewInMaskEl.src = result
+          cutPreviewInMaskEl.style.width = resultWidth + 'px'
+          cutPreviewInMaskEl.style.height = resultHeight + 'px'
+          cutPreviewInMaskEl.style.display = 'block'
+
+          console.log('cropBoxEl offset', cropBoxEl.offsetLeft, cropBoxEl.offsetTop)
+        });
+      }
+      reader.readAsDataURL(file)
+    }
+  </script>
+
+  <script>
+    const dragElement = document.getElementById("cropBox");
+    // 拖拽功能
+    dragElement.addEventListener("mousedown", startDrag);
+    function startDrag(event) {
+      event.preventDefault();
+      const currentHandle = event.target;
+      const isResizeHandle = currentHandle.className.includes("drop-point");
+      if (isResizeHandle) return;
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const startLeft = dragElement.offsetLeft;
+      const startTop = dragElement.offsetTop;
+      document.addEventListener("mousemove", drag);
+      document.addEventListener("mouseup", stopDrag);  
+      function drag(event) {
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        const newLeft = startLeft + dx;
+        const newTop = startTop + dy;
+
+        dragElement.style.left = newLeft + "px";
+        dragElement.style.top = newTop + "px";
+      }
+      function stopDrag() {
+        document.removeEventListener("mousemove", drag);
+        document.removeEventListener("mouseup", stopDrag);
+      }
+    }
+    
+  </script>
+</body>
+</html>
+

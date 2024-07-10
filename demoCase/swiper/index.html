@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../scripts/swiper/swiper-bundle.min.css" />
+  <style>
+    html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .app {
+      margin: 100px 0;
+      height: 700px;
+      overflow: hidden;
+      z-index: 99;
+      position: relative;
+    }
+
+    .swiper {
+      width: 800px;
+      height: 900px;
+      margin-top: -100px;
+    }
+
+    .swiper-slide {
+      width: 800px;
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">Slide 1</div>
+      <div class="swiper-slide">Slide 2</div>
+      <div class="swiper-slide">Slide 3</div>
+      <div class="swiper-slide">Slide 4</div>
+      <div class="swiper-slide">Slide 5</div>
+      <div class="swiper-slide">Slide 6</div>
+      <div class="swiper-slide">Slide 7</div>
+      <div class="swiper-slide">Slide 8</div>
+      <div class="swiper-slide">Slide 9</div>
+    </div>
+  </div>
+</div>
+  
+  <script src="../../scripts/swiper/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      direction: 'vertical',
+      effect: 'coverflow',
+      centeredSlides: true,
+      coverflowEffect: {
+        rotate: -6,
+        stretch: 0,
+        depth: 80,
+        modifier: 4,
+        slideShadows : false
+      },
+      slidesPerView: 3,
+      spaceBetween: 50,
+      slideToClickedSlide: true,
+    });
+
+    // https://juejin.cn/post/7178378803511558202?searchId=2024071100314895304792A077E06129A2#heading-14
+    // https://www.swiper.com.cn/api/effects/196.html
+  </script>
+</body>
+</html>
