@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  ul,ol{list-style:none; margin:0px; padding:0px;} 
+  ul {
+    display: flex;
+  }
+  li {
+    --level_1_margin: 40px;
+    --level_2_gap: 130px;
+    --level_3_top: 30px;
+  }
+  .tree {
+    width: 800px;
+    display: flex;
+    position: relative;
+  }
+  .level_1 {
+    flex: 1;
+    height: 40px;
+    background-color: #9bd3ae;
+  }
+  .level_1_span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100%;
+    position: relative;
+  }
+  .p_level_2 {
+    display: none;
+    position: absolute;
+    top: 80px;
+  }
+  .p_level_2 .level_2:not(:last-child) {
+    margin-right: var(--level_2_gap);
+  }
+  .level_2 {
+    position: relative;
+  }
+  .p_level_3 {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--level_3_top);
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: linear-gradient( 180deg, #C50303 0, rgba(197,3,3,0) 20px);
+    padding-top: 1px;
+  }
+
+  .level_2_span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 60px;
+    background-color: #eb8a8a;
+  }
+
+  .p_level_3 .level_3 {
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c0bcee;
+    position: relative;
+  }
+
+  .active .level_1_span::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: calc(var(--level_1_margin) / 2);
+    background-color: #ff3c3c;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(-1 * var(--level_1_margin) / 2);
+  }
+
+   .active .level_2::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--level_2_gap));
+    height: 2px;
+    background-color: #ff3c3c;
+    left: 50%;
+    top: calc(-1 * var(--level_1_margin) / 2);
+   }
+   /* .active .level_2:last-child::before {
+    width: 0;
+    height: 0;
+   } */
+   .active .level_2 .level_2_span::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: calc(var(--level_1_margin) / 2);
+    background-color: #ff3c3c;
+    top: calc(-1 * var(--level_1_margin) / 2);
+   }
+
+   .active .p_level_3::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: calc(var(--level_3_top));
+    background-color: #ff3c3c;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: calc(-1 * var(--level_3_top));
+   }
+  </style>
+<body>
+  <div id="tree-container"></div>
+</body>
+<script type="module">
+  import $ from "jquery";
+  const source = [
+    {
+      label: '1',
+      value: '1',
+      level: 1,
+      children: [
+        {
+          label: '1-1',
+          value: '1-1',
+          level: 2,
+          children: [
+            {
+              label: '1-1-1',
+              value: '1-1-1',
+              level: 3,
+            }
+          ]
+        },
+        {
+          label: '1-2',
+          value: '1-2',
+          level: 2,
+          children: [
+            {
+              label: '1-2-1',
+              value: '1-2-1',
+              level: 3,
+            },
+            {
+              label: '1-2-2',
+              value: '1-2-2',
+              level: 3,
+            }
+          ]
+        },
+        {
+          label: '1-3',
+          value: '1-3',
+          level: 2,
+          children: [
+            {
+              label: '1-3-1',
+              value: '1-3-1',
+              level: 3,
+            },
+          ]
+        },
+        {
+          label: '1-4',
+          value: '1-4',
+          level: 2,
+          children: [
+            {
+              label: '1-4-1',
+              value: '1-4-1',
+              level: 3,
+            },
+            {
+              label: '1-4-2',
+              value: '1-4-2',
+              level: 3,
+            },
+            {
+              label: '1-4-3',
+              value: '1-4-3',
+              level: 3,
+            }
+          ]
+        }
+      ]
+    },
+    {
+      label: '2',
+      value: '2',
+      level: 1,
+      children: [
+        {
+          label: '2-1',
+          value: '2-1',
+          level: 2,
+        },
+        {
+          label: '2-2',
+          value: '2-2',
+          level: 2,
+        },
+        {
+          label: '2-3',
+          value: '2-3',
+          level: 2,
+        },
+        {
+          label: '2-4',
+          value: '2-4',
+          level: 2,
+        }
+      ]
+    },
+    {
+      label: '3',
+      value: '3',
+      level: 1,
+      children: [
+        {
+          label: '3-1',
+          value: '3-1',
+          level: 2,
+        },
+        {
+          label: '3-2',
+          value: '3-2',
+          level: 2,
+        },
+        {
+          label: '3-3',
+          value: '3-3',
+          level: 2,
+        },
+        {
+          label: '3-4',
+          value: '3-4',
+          level: 2,
+        }
+      ]
+    }
+  ];
+
+  let currentIndex = 0;
+
+  function createTreeNode(nodeData, parentElement) {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = nodeData.label;
+    li.appendChild(span);
+    $(li).addClass(`level_${nodeData.level}`)
+    $(span).addClass(`level_${nodeData.level}_span`)
+
+    if (nodeData.children && nodeData.children.length > 0) {
+      const ul = document.createElement('ul');
+      $(ul).addClass(`p_level_${nodeData.level + 1}`);
+      nodeData.children.forEach(childNode => {
+        createTreeNode(childNode, ul);
+      });
+      li.appendChild(ul);
+    }
+
+    parentElement.appendChild(li);
+  }
+
+  function createTree(source, containerId) {
+    const container = document.getElementById(containerId);
+    const ul = document.createElement('ul');
+    $(ul).addClass('tree');
+    source.forEach(rootNode => {
+      createTreeNode(rootNode, ul);
+    });
+    container.appendChild(ul);
+  }
+
+  // 使用函数
+  createTree(source, 'tree-container');
+
+  $($('.level_1')[currentIndex]).addClass('active');
+  $('.active .p_level_2').css({
+    display: 'flex'
+  })
+  
+</script>
+</html>
