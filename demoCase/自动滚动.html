@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>定时滚动内容</title>
+  <style>
+    #scroll-container {
+      width: 300px;
+      height: 150px;
+      overflow: auto; 
+      border: 1px solid #000;
+      position: relative;
+    }
+    #scroll-content {
+      position: absolute;
+      white-space: nowrap; /* For horizontal scrolling */
+    }
+  </style>
+</head>
+<body>
+
+<div id="scroll-container">
+  <div id="scroll-content">
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+    <p>这里是滚动的内容。可以根据需要添加更多内容来测试滚动效果。</p>
+  </div>
+</div>
+<button onclick="pauseScroll()">暂停</button>
+<button onclick="resumeScroll()">继续</button>
+
+<script>
+  let scrollContainer = document.getElementById('scroll-container');
+  let scrollContent = document.getElementById('scroll-content');
+  let direction = 'vertical'; // 'horizontal' or 'vertical'
+  let scrollAmount = 1; // Scroll amount in pixels
+  let isPaused = false;
+  let intervalId;
+
+  async function startScroll(delay = 2000) {
+    if (delay) {
+      console.log('delay', delay)
+      await new Promise(resolve => {
+        setTimeout(() => {
+          resolve(true)
+        } , delay);
+      })
+    }
+    console.log('start', direction)
+    let maxScroll;
+    if (direction === 'horizontal') {
+      maxScroll = scrollContent.scrollWidth - scrollContainer.clientWidth;
+    } else {
+      maxScroll = scrollContent.scrollHeight - scrollContainer.clientHeight;
+    }
+
+    intervalId = setInterval(() => {
+      if (isPaused) return;
+
+      let currentScroll;
+      if (direction === 'horizontal') {
+        currentScroll = scrollContainer.scrollLeft;
+        scrollContainer.scrollLeft += scrollAmount;
+      } else {
+        currentScroll = scrollContainer.scrollTop;
+        scrollContainer.scrollTop += scrollAmount;
+      }
+
+      if (Math.abs(currentScroll - maxScroll) < 1) {
+        clearInterval(intervalId);
+        setTimeout(() => {
+          if (direction === 'horizontal') {
+            scrollContainer.scrollLeft = 0;
+          } else {
+            scrollContainer.scrollTop = 0;
+          }
+          console.log('scroll end')
+          startScroll();
+        }, 2000); // Pause for 3 seconds
+      }
+    }, 20); // Adjust the interval for smoothness
+  }
+
+  function pauseScroll() {
+    isPaused = true;
+  }
+
+  function resumeScroll() {
+    isPaused = false;
+  }
+
+  startScroll();
+
+  // document.getElementById('scroll-container').addEventListener('mouseover', pauseScroll)
+  // document.getElementById('scroll-container').addEventListener('scroll', pauseScroll)
+</script>
+
+</body>
+</html>
